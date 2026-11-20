@@ -157,9 +157,7 @@ function getActiveBlacklist(PDO $pdo, ?int $resident_id): ?array {
 
 
 /**
- * Photo upload helpers (used by report-defect.php and edit-defect.php)
- * Stored files live in the "uploads" folder next to this file.
- * NOTE: if this file is ever moved into a sub-folder again, change the folder to dirname(__DIR__) . '/uploads/'.
+ * Photo upload helpers (used by report-defect.php and edit-defect.php).
  */
 const UPLOAD_MAX_BYTES = 5 * 1024 * 1024; // 5 MB
 
@@ -175,7 +173,7 @@ function uploadLimitExceeded(): bool {
 
 /**
  * Validate and store an uploaded image.
- * Returns the relative path (e.g. "uploads/defect_1700000000_ab12cd34.jpg"), or null.
+ * Returns the relative path (e.g. "defect_1700000000_ab12cd34.jpg"), or null.
  * Sets $error when an upload was attempted but failed; stays '' when no file was chosen.
  */
 function savePhotoUpload(string $field, string $prefix, string &$error): ?string {
@@ -216,7 +214,7 @@ function savePhotoUpload(string $field, string $prefix, string &$error): ?string
         return null;
     }
 
-    $uploadDir = __DIR__ . '/uploads/';
+    $uploadDir = __DIR__ . '/';
     if (!is_dir($uploadDir) && !@mkdir($uploadDir, 0777, true) && !is_dir($uploadDir)) {
         $error = 'The "uploads" folder does not exist and could not be created. Please create it next to the PHP files.';
         return null;
@@ -232,5 +230,5 @@ function savePhotoUpload(string $field, string $prefix, string &$error): ?string
         return null;
     }
 
-    return 'uploads/' . $newFileName;
+    return $newFileName;
 }
